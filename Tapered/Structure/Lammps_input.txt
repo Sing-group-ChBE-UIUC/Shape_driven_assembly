@@ -1,0 +1,120 @@
+# Coarse-grained bottlebrush
+units  lj
+atom_style  angle
+boundary    p p p
+
+# Minimization run
+
+read_data final0.cfg
+mass  * 1.0
+
+pair_style table linear 1399
+pair_coeff 1 1 pot0.table D1D1
+pair_coeff 1 2 pot0.table D1D2
+pair_coeff 1 3 pot0.table D1D3
+pair_coeff 1 4 pot0.table D1D4
+pair_coeff 1 5 pot0.table D1D5
+pair_coeff 1 6 pot0.table D1D6
+pair_coeff 1 7 pot0.table D1D7
+pair_coeff 1 8 pot0.table D1D8
+pair_coeff 1 9 pot0.table D1D9
+pair_coeff 1 10 pot0.table D1D10
+pair_coeff 1 11 pot0.table D1D11
+pair_coeff 2 2 pot0.table D2D2
+pair_coeff 2 3 pot0.table D2D3
+pair_coeff 2 4 pot0.table D2D4
+pair_coeff 2 5 pot0.table D2D5
+pair_coeff 2 6 pot0.table D2D6
+pair_coeff 2 7 pot0.table D2D7
+pair_coeff 2 8 pot0.table D2D8
+pair_coeff 2 9 pot0.table D2D9
+pair_coeff 2 10 pot0.table D2D10
+pair_coeff 2 11 pot0.table D2D11
+pair_coeff 3 3 pot0.table D3D3
+pair_coeff 3 4 pot0.table D3D4
+pair_coeff 3 5 pot0.table D3D5
+pair_coeff 3 6 pot0.table D3D6
+pair_coeff 3 7 pot0.table D3D7
+pair_coeff 3 8 pot0.table D3D8
+pair_coeff 3 9 pot0.table D3D9
+pair_coeff 3 10 pot0.table D3D10
+pair_coeff 3 11 pot0.table D3D11
+pair_coeff 4 4 pot0.table D4D4
+pair_coeff 4 5 pot0.table D4D5
+pair_coeff 4 6 pot0.table D4D6
+pair_coeff 4 7 pot0.table D4D7
+pair_coeff 4 8 pot0.table D4D8
+pair_coeff 4 9 pot0.table D4D9
+pair_coeff 4 10 pot0.table D4D10
+pair_coeff 4 11 pot0.table D4D11
+pair_coeff 5 5 pot0.table D5D5
+pair_coeff 5 6 pot0.table D5D6
+pair_coeff 5 7 pot0.table D5D7
+pair_coeff 5 8 pot0.table D5D8
+pair_coeff 5 9 pot0.table D5D9
+pair_coeff 5 10 pot0.table D5D10
+pair_coeff 5 11 pot0.table D5D11
+pair_coeff 6 6 pot0.table D6D6
+pair_coeff 6 7 pot0.table D6D7
+pair_coeff 6 8 pot0.table D6D8
+pair_coeff 6 9 pot0.table D6D9
+pair_coeff 6 10 pot0.table D6D10
+pair_coeff 6 11 pot0.table D6D11
+pair_coeff 7 7 pot0.table D7D7
+pair_coeff 7 8 pot0.table D7D8
+pair_coeff 7 9 pot0.table D7D9
+pair_coeff 7 10 pot0.table D7D10
+pair_coeff 7 11 pot0.table D7D11
+pair_coeff 8 8 pot0.table D8D8
+pair_coeff 8 9 pot0.table D8D9
+pair_coeff 8 10 pot0.table D8D10
+pair_coeff 8 11 pot0.table D8D11
+pair_coeff 9 9 pot0.table D9D9
+pair_coeff 9 10 pot0.table D9D10
+pair_coeff 9 11 pot0.table D9D11
+pair_coeff 10 10 pot0.table D10D10
+pair_coeff 10 11 pot0.table D10D11
+pair_coeff 11 11 pot0.table D11D11
+
+bond_style  harmonic
+bond_coeff 1 200 13.81
+bond_coeff 2 200 13.01
+bond_coeff 3 200 12.21
+bond_coeff 4 200 11.40
+bond_coeff 5 200 10.60
+bond_coeff 6 200 9.79
+bond_coeff 7 200 8.99
+bond_coeff 8 200 8.19
+bond_coeff 9 200 7.38
+bond_coeff 10 200 6.58
+
+angle_style harmonic
+angle_coeff 1 4.003364 180
+angle_coeff 2 3.971087 180
+angle_coeff 3 3.934807 180
+angle_coeff 4 3.893194 180
+angle_coeff 5 3.844494 180
+angle_coeff 6 3.786931 180
+angle_coeff 7 3.719111 180
+angle_coeff 8 3.637751 180
+angle_coeff 9 3.537456 180
+
+neigh_modify every 1 delay 0 check yes
+timestep    0.005
+thermo_style    custom etotal ebond temp ke eangle evdwl pe pxx press pyy vol pzz density
+thermo_modify   line multi
+
+min_style   cg
+minimize 1.0e-8 1.0e-10 100000 1000000
+
+# Main run
+fix   1 all nve
+fix   2 all langevin 1.0 1.0 1.0 157812
+
+thermo 10000
+dump  1 all custom 1000 dump.lammpstrj id mol type x y z
+run   10000000
+
+write_data      final1.cfg
+write_restart   bb.restart
+clear
