@@ -6,7 +6,7 @@
 - Structure factors are generated first iterating three q vectors, then sorted into absolute q bins. "Sq_raw.txt" or "Sq_*" files indicate the raw data, and "Sq_by_bin.txt" or "S_q*_bin" indicates sorted data.
 
 
-This data is related to the paper "Local structures of Shape-Defined Bottlebrush Homopolymers in Melts" submitted to Soft Matter (2026.9 current). Hope it is published. I'll update the DOI later. 
+This repository is related to our recent submission "Local structures of Shape-Defined Bottlebrush Homopolymers in Melts" to Soft Matter (2026.9). It is really fun work:) I'll update the DOI later once it's published. 
 
   If you find any issues or need further details, contact through my personal email (khs12137@gmail.com)
    
